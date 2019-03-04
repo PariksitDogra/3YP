@@ -1,13 +1,14 @@
 
 class Unit {
   static final int SIZE = 80;
-  static final int BLACK = 1;
-  static final int WHITE = -1;
+  //static final int BLACK = 1;
+  //static final int WHITE = -1;
   
   int x;
   int y;
   int counter = 0;
   int size = SIZE;
+  GameBoard board;
   
   Unit(int x, int y) {
     this.x = x;
@@ -47,7 +48,7 @@ class Unit {
      return; 
     }
     noStroke();
-    if(showCounter == BLACK){
+    if(showCounter == board.BLACK){
       fill(0, 255 * 0.3);  
     } else {
       fill(255, 255 * 0.3);
@@ -60,7 +61,7 @@ class Unit {
     fill(0,0.6 * 255,0);
     rect(x * size, y * size, size, size);
     if(this.counter != 0){
-      if( this.counter == BLACK){        
+      if( this.counter == board.BLACK){        
         fill(0);
       } else {
         fill(255); 

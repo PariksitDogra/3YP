@@ -1,6 +1,8 @@
 
 public class GameBoard {
   int unitSize = 80;
+  static final int BLACK = 1;
+  static final int WHITE = -1;
   ArrayList<ArrayList> units = new ArrayList();
 
   public GameBoard() {
@@ -14,10 +16,10 @@ public class GameBoard {
   }
 
   public void startGame() {
-   getUnitAt(3,3).putCounter( Unit.BLACK);
-   getUnitAt(4,4).putCounter( Unit.BLACK);
-   getUnitAt(3,4).putCounter( Unit.WHITE);
-   getUnitAt(4,3).putCounter( Unit.WHITE);
+   getUnitAt(3,3).putCounter( this.BLACK);
+   getUnitAt(4,4).putCounter( this.BLACK);
+   getUnitAt(3,4).putCounter( this.WHITE);
+   getUnitAt(4,3).putCounter( this.WHITE);
   }
 
   public Unit getUnitGeo(int x, int y) {
@@ -93,8 +95,15 @@ public class GameBoard {
         unit.display();
         
       }
+    }
   }
-  }
+  
+  //int[][] boardCopy = new int[board.length][board.length];
+  //   for (int[] row : board) {
+  //   System.arrayCopy(board,0,boardCopy,0,board.length);
+  //}
+  
+  
   
   boolean isValid(Unit unit){
     if(unit.hasCounter() & unit.isWhite() & getUnitAt(unit.x + 1, unit.y).isBlack() ||
@@ -103,14 +112,46 @@ public class GameBoard {
     unit.hasCounter() & unit.isWhite() & getUnitAt(unit.x, unit.y - 1).isBlack()){
         System.out.println("It works!");
         return true;
-   
     }else{
      return false;
         }
   }
   
+  public void makeMove(){
+   
+    Unit unit = this.getUnitGeo(mouseX, mouseY);
+    ArrayList<Unit> unitsToFlip = this.numUnitsToFlip(unit, myCounter);
   
+    if(unitsToFlip.size() > 0){
+      unit.putCounter(myCounter);
+   
+      for(Unit u: unitsToFlip){
+        u.flip();
+      }
+    
+      turnEnd();
+    } 
+    else {
+    }
+  }
   
+  public void makeMoveAi(){
+    Unit unit = enemyAi.predict();
+
+    if (unit ==null) {
+      turnEnd(); 
+      return;
+    }
+    ArrayList<Unit> unitsToFlip = gBoard.numUnitsToFlip(unit, currentTurn);
+    unit.putCounter(currentTurn);  
+    if (gBoard.isValid(unit)) {
+      for (Unit u : unitsToFlip) {
+         u.flip();
+      }
+      turnEnd();
+    };
+  
+  }
   public ArrayList<Unit> availableUnits() {
     ArrayList<Unit> availableUnits = new ArrayList<Unit>();
     for(ArrayList<Unit> rows: units){
@@ -146,7 +187,7 @@ public class GameBoard {
     for(ArrayList rows: units) {
       for(Object u: rows) {
         Unit unit = (Unit) u;
-        gameScore += unit.getScore();
+        gameScore += unit.getCounterValue();
       }
     }
     return gameScore;
@@ -167,10 +208,10 @@ public class GameBoard {
   public int gameWinner() {
     int gameScore = this.calculateScore();
     if( gameScore > 0 ){
-      return Unit.BLACK;
+      return this.BLACK;
     } 
     else if( gameScore < 0 ) {
-      return Unit.WHITE;
+      return this.WHITE;
     } 
     else {
       return 0;

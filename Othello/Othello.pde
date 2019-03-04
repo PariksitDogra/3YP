@@ -24,10 +24,10 @@ class EnemyAI {
     this.counter = counter;
   }
 
-  Unit predict() {
+  public Unit predict() {
     int max = 0;
     Unit unitToPut = null;
-    ArrayList<Unit> candidates = board.availableUnits();
+    ArrayList<Unit> candidates = board.availableUnits(); //empty squares
     for(Unit unit: candidates) {
       ArrayList<Unit> unitsToFlip = board.numUnitsToFlip(unit, Unit.WHITE);
       if(max < unitsToFlip.size()){
@@ -123,6 +123,7 @@ public void draw(){
   ui.display();
   
   if(isMyTurn()){
+    gBoard.allUnits();
     textSize(20);
     fill(0);
     text("Your turn", 20 , 640 + 30);
@@ -218,8 +219,9 @@ public void turnForAi() {
   }
   
   ArrayList<Unit> unitsToFlip = gBoard.numUnitsToFlip(unit, currentTurn);
-
+  
   unit.putCounter(currentTurn);  
+  gBoard.isValid(unit);
   for(Unit u: unitsToFlip){
     u.flip();
   }

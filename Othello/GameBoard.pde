@@ -63,6 +63,7 @@ public class GameBoard {
 
        }
      }
+    
      return unitsToFlip;
   }
 
@@ -73,7 +74,7 @@ public class GameBoard {
     }
     int columns = unitsAtStart.getColumns() + dirColumns;
     int rows = unitsAtStart.getRows() + dirRows;
-    Unit nextUnit = getUnitAt(columns ,rows);
+    Unit nextUnit = getUnitAt(columns,rows);
     
     while(nextUnit != null){
       returnUnits.add(nextUnit);
@@ -88,11 +89,28 @@ public class GameBoard {
     for(ArrayList row: units){
       for(Object u: row){
         Unit unit = (Unit) u;
+        
         unit.display();
+        
       }
-    }
   }
-
+  }
+  
+  boolean isValid(Unit unit){
+    if(unit.hasCounter() & unit.isWhite() & getUnitAt(unit.x + 1, unit.y).isBlack() ||
+    unit.hasCounter() & unit.isWhite() & getUnitAt(unit.x -1 , unit.y).isBlack() || 
+    unit.hasCounter() & unit.isWhite() & getUnitAt(unit.x, unit.y +1).isBlack() || 
+    unit.hasCounter() & unit.isWhite() & getUnitAt(unit.x, unit.y - 1).isBlack()){
+        System.out.println("It works!");
+        return true;
+   
+    }else{
+     return false;
+        }
+  }
+  
+  
+  
   public ArrayList<Unit> availableUnits() {
     ArrayList<Unit> availableUnits = new ArrayList<Unit>();
     for(ArrayList<Unit> rows: units){
@@ -103,6 +121,24 @@ public class GameBoard {
       }
     }
     return availableUnits;
+  }
+  
+  public int allUnits() {
+    int black = 0;
+    int white = 0;
+    for(ArrayList<Unit> rows: units){
+      for(Unit unit: rows){
+        if(unit.hasCounter() & unit.isBlack()){
+          black = black + 1;
+        }else if (unit.hasCounter() & unit.isWhite()){
+          white = white +1;
+        }
+      }
+    }
+    //System.out.println("Num of Black: " + black);
+    //System.out.println("Num of White: " + white);
+    //System.out.println(white - black);
+    return (white - black);
   }
 
   public int calculateScore() {
@@ -115,7 +151,19 @@ public class GameBoard {
     }
     return gameScore;
   }
-
+  
+  boolean isGBlack(Unit unit){
+    return (unit.counter == 1);
+  }
+  
+  boolean isGWhite(Unit unit){
+    return (unit.counter == -1);
+  }
+  
+  boolean isEmpty(Unit unit){
+    return (unit.counter == 0);
+  }
+  
   public int gameWinner() {
     int gameScore = this.calculateScore();
     if( gameScore > 0 ){

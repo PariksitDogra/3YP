@@ -26,7 +26,19 @@ class Unit {
     return (this.counter != 0);
   }
   
-  int getScore() {
+  boolean isBlack(){
+    return (this.counter == 1);
+  }
+  
+  boolean isWhite(){
+    return (this.counter == -1);
+  }
+  
+  boolean isEmpty(){
+    return (this.counter == 0);
+  }
+  
+  int getCounterValue() {
     return this.counter; 
   }
 
@@ -59,8 +71,14 @@ class Unit {
   }
   
   public boolean putCounter(int counterColor) {
-    this.counter = counterColor;
-    return true;
+    if(counterColor == 0 || counterColor == -1 || counterColor == 1){
+      this.counter = counterColor;
+      return true;
+    }else{
+      System.out.println("WRONG COUNTER NUMBER");
+      return false;
+    }
+    
   }
   
   void flip() {

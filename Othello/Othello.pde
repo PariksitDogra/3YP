@@ -44,6 +44,7 @@ class EnemyAI {
 }
 
 public void setup() {
+
   size(640, 700);
   gBoard = new GameBoard();
   gBoard.startGame();
@@ -60,6 +61,10 @@ public void setup() {
   newGameOption.addActionListener(new ActionListener() {
     public void actionPerformed(ActionEvent arg0) {
       setup();
+      loop();
+      if(!isMyTurn()){
+        turnEnd();
+      }
     }
   }
   );
@@ -106,7 +111,7 @@ public void draw() {
 
 public void showGhost() {
   Unit unit = gBoard.getUnitGeo(mouseX, mouseY);
-  if (unit != null) {
+  if(unit != null) {
     unit.showGhost(myCounter);
   }
 }
@@ -131,6 +136,7 @@ public void mouseClicked() {
     return;
   }
   
+  
   gBoard.makeMove();
   
 }
@@ -138,7 +144,6 @@ public void mouseClicked() {
 public void turnForAi() {
   
    gBoard.makeMoveAi();
-  
   
 }
 

@@ -29,7 +29,7 @@ public class GameBoard{
     for(int i=0; i < 8; i++){
       ArrayList<Unit> rows = new ArrayList();
       for(int j=0; j < 8; j++){
-        Unit actual = board.getUnitAt(j, i);
+        Unit actual = board.getUnit(j, i);
         Unit newUnit = new Unit(j ,i);
         newUnit.setCounterValue(actual.getCounterValue());
         rows.add(newUnit);
@@ -39,10 +39,10 @@ public class GameBoard{
   }
 
   public void startGame() {
-   getUnitAt(3,3).putCounter( Unit.WHITE);
-   getUnitAt(4,4).putCounter( Unit.WHITE);
-   getUnitAt(3,4).putCounter( Unit.BLACK);
-   getUnitAt(4,3).putCounter( Unit.BLACK);
+   getUnit(3,3).putCounter( Unit.WHITE);
+   getUnit(4,4).putCounter( Unit.WHITE);
+   getUnit(3,4).putCounter( Unit.BLACK);
+   getUnit(4,3).putCounter( Unit.BLACK);
   
 }
   
@@ -72,10 +72,10 @@ public class GameBoard{
   public Unit getUnitGeo(int x, int y) {
     int numColumns = floor( x / unitSize);
     int numRows = floor( y / unitSize);
-    return this.getUnitAt(numColumns, numRows);
+    return this.getUnit(numColumns, numRows);
   }
 
-  public Unit getUnitAt(int columns, int rows) {
+  public Unit getUnit(int columns, int rows) {
     if(columns < 0 || columns > 7 || rows < 0 || rows > 7){
       return null;
      }
@@ -88,6 +88,7 @@ public class GameBoard{
     if(unit.hasCounter()){
       return unitsToFlip;
     }
+    
 
     for(int dirColumn = -1; dirColumn < 2; dirColumn ++){
       for(int dirRows = -1; dirRows < 2; dirRows ++) {
@@ -123,13 +124,13 @@ public class GameBoard{
     }
     int columns = unitsAtStart.getColumns() + dirColumns;
     int rows = unitsAtStart.getRows() + dirRows;
-    Unit nextUnit = getUnitAt(columns,rows);
+    Unit nextUnit = getUnit(columns,rows);
     
     while(nextUnit != null){
       returnUnits.add(nextUnit);
       columns += dirColumns;
       rows += dirRows;
-      nextUnit = getUnitAt(columns ,rows);
+      nextUnit = getUnit(columns ,rows);
     }
     return returnUnits;
   }
@@ -192,6 +193,9 @@ public class GameBoard{
   public void makeMove(){
    
     Unit unit = this.getUnitGeo(mouseX, mouseY);
+    if(unit == null){
+      return;
+    }
     ArrayList<Unit> unitsToFlip = this.numUnitsToFlip(unit, myCounter);
     
     if(unitsToFlip.size() > 0){
@@ -273,7 +277,7 @@ public class GameBoard{
     
     ArrayList<Unit> unitsToFlip = boardCopy.numUnitsToFlip(unit, player);
     // unit.putCounter(player);
-    boardCopy.getUnitAt(unit.x, unit.y).setCounterValue(player);
+    boardCopy.getUnit(unit.x, unit.y).setCounterValue(player);
     for (Unit u : unitsToFlip) {
        // remember to verify ref or obj  
        u.flip();         
@@ -355,7 +359,7 @@ public class GameBoard{
     
     }
     ArrayList<Unit> unitsToFlip = gBoard.numUnitsToFlip(unit, currentTurn);
-    gBoard.getUnitAt(unit.x, unit.y).setCounterValue(currentTurn);  
+    gBoard.getUnit(unit.x, unit.y).setCounterValue(currentTurn);  
      for (Unit u : unitsToFlip) {
          u.flip();
      }

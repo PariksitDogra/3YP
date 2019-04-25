@@ -26,7 +26,7 @@ public void display() {
   public void showWinnerMessage(String message) {
     textSize(20);
     fill(0);
-    text(message, 20 , 640 + 30);
+    text(message, 200 , 640 + 30);
   }
   
 

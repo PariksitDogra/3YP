@@ -5,14 +5,18 @@ import processing.awt.PSurfaceAWT;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.lang.Math;
+import java.io.Serializable;
+import java.util.HashMap;
+import javafx.util.Pair;
 
 GameBoard gBoard; 
 EnemyAI enemyAi; 
 Interface ui; 
 
-int myCounter = gBoard.BLACK; 
-int aiCounter = gBoard.WHITE; 
-int currentTurn = gBoard.BLACK; 
+int myCounter = Unit.BLACK; 
+int aiCounter = Unit.WHITE; 
+int currentTurn = Unit.BLACK; 
 int aiTurnStartTime; 
 
 class EnemyAI {
@@ -24,21 +28,20 @@ class EnemyAI {
     this.counter = counter;
   }
 
-  public Unit predict() {
-    int max = 0;
-    Unit unitToPut = null;
-    ArrayList<Unit> candidates = board.availableUnits(); //empty squares
-    for (Unit unit : candidates) {
-      ArrayList<Unit> unitsToFlip = board.numUnitsToFlip(unit, aiCounter);
-      if (max < unitsToFlip.size()) {
-        max = unitsToFlip.size();
-        unitToPut = unit;
-      }
-    }
-    return unitToPut;
-  }
+  //public Unit predict() {
+  //  int max = 0;
+  //  Unit unitToPut = null;
+  //  ArrayList<Unit> candidates = board.availableUnits(); //empty squares
+  //  for (Unit unit : candidates) {
+  //    ArrayList<Unit> unitsToFlip = board.numUnitsToFlip(unit, aiCounter);
+  //    if (max < unitsToFlip.size()) {
+  //      max = unitsToFlip.size();
+  //      unitToPut = unit;
+  //    }
+  //  }
+  //  return unitToPut;
+  //}
 }
-
 
 public void setup() {
   size(640, 700);
@@ -51,8 +54,6 @@ public void setup() {
   myMenu.add(optionsMenu);
   MenuItem newGameOption = new MenuItem("New Game");
   optionsMenu.add(newGameOption);
-  MenuItem pvpOption = new MenuItem("Player vs. Player");
-  optionsMenu.add(pvpOption);
   PSurfaceAWT awtSurface = (PSurfaceAWT)surface;
   PSurfaceAWT.SmoothCanvas smoothCanvas = (PSurfaceAWT.SmoothCanvas)awtSurface.getNative();
   smoothCanvas.getFrame().setMenuBar(myMenu);
@@ -81,7 +82,6 @@ public void draw() {
   ui.display();
 
   if (isMyTurn()) {
-    gBoard.allUnits();
     textSize(20);
     fill(0);
     text("Your turn", 20, 640 + 30);
@@ -95,7 +95,7 @@ public void draw() {
     }
 
     if (millis() - aiTurnStartTime > 2000) {
-      turnForAi();
+    turnForAi();
       aiTurnStartTime = 0;
     }
     textSize(20);
@@ -130,19 +130,24 @@ public void mouseClicked() {
     turnEnd();
     return;
   }
+  
   gBoard.makeMove();
+  
 }
 
 public void turnForAi() {
-  gBoard.makeMoveAi();
+  
+   gBoard.makeMoveAi();
+  
+  
 }
 
 public void gameOver() {    
   String message;
   if ( gBoard.gameWinner() == myCounter ) {
-    message = "The player has won!";
+    message = "The player has won! ( " + gBoard.returnBlack(gBoard) + " - " + gBoard.returnWhite(gBoard) + " )";
   } else if ( gBoard.gameWinner() == aiCounter ) {
-    message = "The player has lost!";
+    message = "The player has lost! ( " + gBoard.returnBlack(gBoard) + " - " + gBoard.returnWhite(gBoard) + " )";
   } else {
     message = "Draw!";
   }

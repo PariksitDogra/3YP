@@ -23,20 +23,6 @@ public void display() {
     text("Pass", passButtonX + 14, passButtonY + 23);
   }
   
-  //public void showNewGameButton(){
-  //  stroke(100);
-  //  fill(125, 23, 209);
-  //  rect(passButtonX - 200, passButtonY, passButtonWidth +35, passButtonHeight);
-  //  textSize(18);
-  //  fill(0);
-  //  text("New Game", passButtonX - 200 , passButtonY + 23);
-  //  if(mousePressed){
-  //    if(mouseX> passButtonX - 200  && mouseX < passButtonX - 200 + passButtonWidth && mouseY> passButtonY && mouseY <passButtonY+ passButtonHeight){
-  //    System.out.println("YEET");
-  //  }  
-  
-  
-
   public void showWinnerMessage(String message) {
     textSize(20);
     fill(0);

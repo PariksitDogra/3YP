@@ -13,7 +13,7 @@ public class GameBoard{
   { new Double(80), new Double(-50), new Double(1), new Double(5), new Double(5), new Double(1), new Double(-50), new Double(80)},
   { new Double(100), new Double(-45), new Double(3), new Double(1), new Double(1), new Double(3), new Double(-45), new Double(100)},
   { new Double(-30), new Double(-50), new Double(-45), new Double(-5), new Double(-5), new Double(-45), new Double(-50), new Double(-30)},
-  { new Double(100), new Double(-30.00), new Double(10), new Double(8), new Double(8), new Double(10), new Double(-30), new Double(100)},
+  { new Double(100), new Double(-300), new Double(10), new Double(8), new Double(8), new Double(10), new Double(-30), new Double(100)},
   };
 
   public GameBoard() {
@@ -284,18 +284,7 @@ public class GameBoard{
      }
      return boardCopy;
  }
- 
- 
- public Unit aiPredict(){
-   GameBoard gBoardCopy = new GameBoard(gBoard);
-   Pair<Double, Unit> score = minimaxAB(gBoardCopy, 5, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, gBoardCopy.WHITE);
-   System.out.println("Minimax_Val: "+ score.getKey()+ ", Unit_X: " + score.getValue().x + ", Unit_Y: " + score.getValue().y);
-   
-   return score.getValue();
- }
- 
- 
- 
+
  public Pair<Double, Unit> minimaxAB(GameBoard node, int depth, Double alpha, Double beta, int maxPlayer){
    ArrayList<Unit> emptySquares = node.availableUnits();
    Unit bestU = new Unit(-1,-1);
@@ -339,7 +328,14 @@ public class GameBoard{
    }
 
   }
-  
+  public Unit aiPredict(){
+   GameBoard gBoardCopy = new GameBoard(gBoard);
+   Pair<Double, Unit> score = minimaxAB(gBoardCopy, 5, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, gBoardCopy.WHITE);
+   System.out.println("Minimax_Val: "+ score.getKey()+ ", Unit_X: " + score.getValue().x + ", Unit_Y: " + score.getValue().y);
+   
+   return score.getValue();
+ }
+ 
   
  
   public void makeMoveAi(){

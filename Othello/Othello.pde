@@ -27,22 +27,8 @@ class EnemyAI {
     this.board = board;
     this.counter = counter;
   }
-
-  //public Unit predict() {
-  //  int max = 0;
-  //  Unit unitToPut = null;
-  //  ArrayList<Unit> candidates = board.availableUnits(); //empty squares
-  //  for (Unit unit : candidates) {
-  //    ArrayList<Unit> unitsToFlip = board.numUnitsToFlip(unit, aiCounter);
-  //    if (max < unitsToFlip.size()) {
-  //      max = unitsToFlip.size();
-  //      unitToPut = unit;
-  //    }
-  //  }
-  //  return unitToPut;
-  //}
 }
-
+//Initialises the entire sketch, instances are initiated here as well as window parameters.
 public void setup() {
 
   size(640, 700);
@@ -72,47 +58,47 @@ public void setup() {
 
 
 
-
+//This method allows for any checks every second
 public void draw() {
 
   background(255);
   gBoard.display();
 
-
+  //If no more empty space on the board, end the game
   if (gBoard.availableUnits().size() == 0) { 
     gameOver();
     return;
   }  
-
+  //Show the pass button
   ui.display();
-
+  //If it is my turn, show me the possible moves
   if (isMyTurn()) {
     textSize(20);
     fill(0);
     text("Your turn", 20, 640 + 30);
-    showGhost();
+    showCounters();
   }
-
-
+  
+  //Artificial Timer to prevent the AI from being too fast
   if (!isMyTurn()) {
     if ( aiTurnStartTime == 0) {
       aiTurnStartTime = millis();
     }
 
-    if (millis() - aiTurnStartTime > 2000) {
+    if (millis() - aiTurnStartTime > 1000) {
     turnForAi();
-      aiTurnStartTime = 0;
+    aiTurnStartTime = 0;
     }
     textSize(20);
     fill(0);
     text("Enemy's Turn", 20, 640 + 30);
   }
 }
-
-public void showGhost() {
+//Shows the transluscent counter following the mouse
+public void showCounters() {
   Unit unit = gBoard.getUnitGeo(mouseX, mouseY);
   if(unit != null) {
-    unit.showGhost(myCounter);
+    unit.showCounters(myCounter);
   }
 }
 
@@ -126,7 +112,7 @@ public void turnEnd() {
   currentTurn = (myCounter == currentTurn) ? aiCounter : myCounter;
 }
 
-
+//If it is not my turn, stop, if I click on pass, end the turn otherwise make the move
 public void mouseClicked() {
   if (!isMyTurn()) {
     return;
@@ -140,13 +126,13 @@ public void mouseClicked() {
   gBoard.makeMove();
   
 }
-
+//Ai makes its move now
 public void turnForAi() {
   
    gBoard.makeMoveAi();
   
 }
-
+//Outputs winner message on gameover also prevents any more drawing to happen on the sketch
 public void gameOver() {    
   String message;
   if ( gBoard.gameWinner() == myCounter ) {
@@ -156,6 +142,6 @@ public void gameOver() {
   } else {
     message = "Draw!";
   }
-  ui.showWinnerMessage(message);
+  ui.declareWinner(message);
   noLoop();
 }

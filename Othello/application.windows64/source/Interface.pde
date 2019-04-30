@@ -14,6 +14,7 @@ public void display() {
     showPassButton();
   }
   
+  //Generates the dimensions and visuals of the pass button
   public void showPassButton() {
     stroke(100);
     fill(100,100,100);
@@ -22,28 +23,14 @@ public void display() {
     fill(0);
     text("Pass", passButtonX + 14, passButtonY + 23);
   }
-  
-  //public void showNewGameButton(){
-  //  stroke(100);
-  //  fill(125, 23, 209);
-  //  rect(passButtonX - 200, passButtonY, passButtonWidth +35, passButtonHeight);
-  //  textSize(18);
-  //  fill(0);
-  //  text("New Game", passButtonX - 200 , passButtonY + 23);
-  //  if(mousePressed){
-  //    if(mouseX> passButtonX - 200  && mouseX < passButtonX - 200 + passButtonWidth && mouseY> passButtonY && mouseY <passButtonY+ passButtonHeight){
-  //    System.out.println("YEET");
-  //  }  
-  
-  
-
-  public void showWinnerMessage(String message) {
+  //Shows the winner message
+  public void declareWinner(String message) {
     textSize(20);
     fill(0);
-    text(message, 20 , 640 + 30);
+    text(message, 200 , 640 + 30);
   }
   
-
+  //Checks if the player is clicking on the button
   public int clickButton(int x, int y) {
     if(x > passButtonX && x < passButtonX + passButtonWidth && y > passButtonY && y < passButtonY + passButtonHeight ){
       return PASS;

@@ -49,7 +49,7 @@ class Unit {
   
   
   //GUI
-  void showGhost(int showCounter) {
+  void showCounters(int showCounter) {
     if(this.hasCounter()){
      return; 
     }
@@ -62,7 +62,9 @@ class Unit {
     ellipse(this.x * size + (size/2),  this.y * size + (size/2), size * 0.9,size * 0.9);   
   }
   
-  //GUI
+  
+  
+  //Displays the dimensions and looks of the Unit item
   void display() {
     stroke(0);
     fill(0,0.6 * 100,0);
@@ -77,6 +79,11 @@ class Unit {
       ellipse(x * size + (size/2), y * size + (size/2),size * 0.9,size * 0.9);
     }
   }
+  //flips the counter
+  void flip() {
+    this.counter *= -1; 
+    }
+ 
   
   //Useful
   public boolean putCounter(int counterColor) {
@@ -88,10 +95,6 @@ class Unit {
       return false;
     }
     
-  }
+    }
+   }
   
-  
-  void flip() {
-    this.counter *= -1; 
-  }
-}
